@@ -1,0 +1,117 @@
+@{
+    ViewData["Title"] = "Concrete Calculator";
+    string unitSystem = ViewBag.UnitSystem as string ?? "imperial";
+    bool isImperial = unitSystem == "imperial";
+
+    string selectedBagSize = ViewData["bagSize"]?.ToString() ?? "80";
+}
+
+<h1>Concrete Slab Calculator</h1>
+
+@if (ViewBag.Error != null)
+{
+    <p style="color: red; font-weight: bold; margin-bottom: 15px;">@ViewBag.Error</p>
+}
+
+@if (ViewBag.Result != null)
+{
+    <div style="border: 1px solid #aaa; padding: 20px; margin: 25px 0; background-color: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <h3 style="margin-top: 0; color: #2c3e50;">Results (@(isImperial ? "Imperial" : "Metric"))</h3>
+        
+        <div style="display: flex; flex-wrap: wrap; gap: 30px; margin-top: 15px;">
+            <div>
+                <strong style="font-size: 1.1em;">Volume</strong><br />
+                <span style="font-size: 1.4em; color: #2980b9;">@ViewBag.VolumeDisplay</span>
+            </div>
+            
+            <div>
+                <strong style="font-size: 1.1em;">Bags Needed</strong><br />
+                <span style="font-size: 1.4em; color: #e67e22;">@ViewBag.BagsNeededDisplay</span>
+                @if (ViewBag.ExtraDisplay != null)
+                {
+                    <br /><small>(+ @ViewBag.ExtraDisplay extra)</small>
+                }
+            </div>
+        </div>
+
+        @if (ViewBag.CostDisplay != null)
+        {
+            <div style="margin-top: 20px;">
+                <strong style="font-size: 1.1em;">Estimated Material Cost</strong><br />
+                <span style="font-size: 1.6em; color: #27ae60; font-weight: bold;">@ViewBag.CostDisplay</span>
+            </div>
+        }
+    </div>
+}
+
+<form method="post" asp-action="Concrete">
+    <input type="hidden" name="isUnitChange" value="false" />
+
+    <!-- Unit toggle -->
+    <div style="margin-bottom: 20px;">
+        <label style="margin-right: 25px;">
+            <input type="radio" name="unitSystem" value="imperial" @(isImperial ? "checked" : "")
+                   onchange="document.querySelector('input[name=\'isUnitChange\']').value='true'; this.form.submit();"/>
+            Imperial (feet / inches)
+        </label>
+        <label>
+            <input type="radio" name="unitSystem" value="metric" @(!isImperial ? "checked" : "")
+                   onchange="document.querySelector('input[name=\'isUnitChange\']').value='true'; this.form.submit();"/>
+            Metric (meters / cm)
+        </label>
+    </div>
+
+    <!-- Dimensions -->
+    <div style="margin-bottom: 15px;">
+        <label>Length (@(isImperial ? "feet" : "meters")):</label><br />
+        <input type="number" name="length" step="0.01" min="0" value="@ViewData["length"]"
+               style="width: 180px; padding: 8px; border: 1px solid @(ViewBag.LengthError != null ? "red" : "#ccc"); border-radius: 4px;" />
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label>Width (@(isImperial ? "feet" : "meters")):</label><br />
+        <input type="number" name="width" step="0.01" min="0" value="@ViewData["width"]"
+               style="width: 180px; padding: 8px; border: 1px solid @(ViewBag.WidthError != null ? "red" : "#ccc"); border-radius: 4px;" />
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label>Depth (@(isImperial ? "inches" : "cm")):</label><br />
+        <input type="number" name="depth" step="0.1" min="0" value="@ViewData["depth"]"
+               style="width: 180px; padding: 8px; border: 1px solid @(ViewBag.DepthError != null ? "red" : "#ccc"); border-radius: 4px;" />
+    </div>
+
+    <!-- Bag size -->
+    <div style="margin-bottom: 15px;">
+        <label>Bag size:</label><br />
+        <select name="bagSize" style="width: 180px; padding: 8px; border-radius: 4px;">
+            <option value="40" selected="@(ViewData["bagSize"]?.ToString() == "40")">40 lb</option>
+            <option value="60" selected="@(ViewData["bagSize"]?.ToString() == "60")">60 lb</option>
+            <option value="80" selected="@(ViewData["bagSize"]?.ToString() == "80")">80 lb</option>
+        </select>
+    </div>
+
+    <!-- Optional extra volume input -->
+    <div style="margin-bottom: 15px;">
+        <label>Extra volume to add (overage / waste):</label><br />
+        <input type="number" name="extraVolume" step="0.01" min="0" value="@ViewData["extraVolume"]"
+               placeholder="e.g. 0.5 or 1" style="width: 180px; padding: 8px; border-radius: 4px;" />
+        <small style="display: block; margin-top: 5px; color: #666;">
+            Leave blank for exact amount. Common to add 0.5–1 @(isImperial ? "yd³" : "m³") for spillage, lines, truck hold-up.
+        </small>
+    </div>
+
+    <!-- Price -->
+    <div style="margin-bottom: 20px;">
+        <label>Price per cubic @(isImperial ? "yard" : "meter") (optional):</label><br />
+        <input type="number" name="pricePerUnit" step="0.01" min="0" value="@ViewData["pricePerUnit"]"
+               placeholder="e.g. 140" style="width: 180px; padding: 8px; border-radius: 4px;" />
+    </div>
+
+    <button type="submit" style="padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        Calculate
+    </button>
+</form>
+
+<p style="margin-top: 25px; font-size: 0.9em; color: #666;">
+    Note: Switching units reloads the form. Bag yields are approximate: 40 lb ≈ 0.3 ft³ / 0.011 m³, 60 lb ≈ 0.45 ft³ / 0.017 m³, 80 lb ≈ 0.6 ft³ / 0.036 m³.
+</p>
