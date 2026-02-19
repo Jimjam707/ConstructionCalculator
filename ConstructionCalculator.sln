@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConstructionCalculator", "ConstructionCalculator\ConstructionCalculator.csproj", "{04F6660E-86E6-4861-885F-8012AF3C2B05}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConcreteCalulator.Tests", "ConcreteCalulator.Tests\ConcreteCalulator.Tests.csproj", "{9FE3D3A5-3D38-4C36-AC02-863BC27AE349}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{04F6660E-86E6-4861-885F-8012AF3C2B05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04F6660E-86E6-4861-885F-8012AF3C2B05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04F6660E-86E6-4861-885F-8012AF3C2B05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FE3D3A5-3D38-4C36-AC02-863BC27AE349}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FE3D3A5-3D38-4C36-AC02-863BC27AE349}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FE3D3A5-3D38-4C36-AC02-863BC27AE349}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FE3D3A5-3D38-4C36-AC02-863BC27AE349}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

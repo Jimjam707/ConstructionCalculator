@@ -1,0 +1,8 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=A013AA35_002DB998_002D4AC5_002D9D19_002D041985C7462C_002Ff_003AConcreteCalculatorTest_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8b7572d2_002D30ad_002D4cde_002D969b_002D917e3a252131/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Concrete_Post_ValidImperial_ReturnsViewWithCorrectVolume" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\Jimi\OneDrive\Desktop\repos\ConstructionCalculator\ConcreteCalulator.Tests" Presentation="&amp;lt;ConcreteCalulator.Tests&amp;gt;" /&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	
+	
+	</wpf:ResourceDictionary>

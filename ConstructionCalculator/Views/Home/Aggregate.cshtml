@@ -1,0 +1,75 @@
+@{
+    ViewData["Title"] = "Aggregate Tonnage Calculator";
+    string unitSystem = ViewBag.UnitSystem as string ?? "imperial";
+    bool isImperial = unitSystem == "imperial";
+}
+
+<h1>Aggregate Tonnage Calculator</h1>
+
+@if (ViewBag.Error != null)
+{
+    <p style="color: red; font-weight: bold;">@ViewBag.Error</p>
+}
+
+@if (ViewBag.Result != null)
+{
+    <div style="border: 1px solid #ccc; padding: 20px; margin: 20px 0; background-color: #f9f9f9; border-radius: 5px;">
+        <h3>Results (@(isImperial ? "Imperial" : "Metric"))</h3>
+        <p><strong>Volume:</strong> @ViewBag.VolumeDisplay</p>
+        <p><strong>@ViewBag.MaterialDisplay Needed:</strong> @ViewBag.TonsDisplay</p>
+        @if (ViewBag.ExtraDisplay != null)
+        {
+            <p><strong>Extra:</strong> @ViewBag.ExtraDisplay</p>
+        }
+    </div>
+}
+
+<form method="post" asp-action="Aggregate">
+    <input type="hidden" name="isUnitChange" value="false" />
+
+    <div style="margin-bottom: 15px;">
+        <label>
+            <input type="radio" name="unitSystem" value="imperial" @(isImperial ? "checked" : "")
+                   onchange="document.querySelector('input[name=\'isUnitChange\']').value='true'; this.form.submit();"/>
+            Imperial (feet / inches)
+        </label>
+        <br />
+        <label>
+            <input type="radio" name="unitSystem" value="metric" @(!isImperial ? "checked" : "")
+                   onchange="document.querySelector('input[name=\'isUnitChange\']').value='true'; this.form.submit();"/>
+            Metric (meters / cm)
+        </label>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label>Length (@(isImperial ? "feet" : "meters")):</label><br />
+        <input type="number" name="length" step="0.01" min="0" value="@ViewData["length"]" />
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label>Width (@(isImperial ? "feet" : "meters")):</label><br />
+        <input type="number" name="width" step="0.01" min="0" value="@ViewData["width"]" />
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label>Depth (@(isImperial ? "inches" : "cm")):</label><br />
+        <input type="number" name="depth" step="0.1" min="0" value="@ViewData["depth"]" />
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label>Material:</label><br />
+        <select name="material">
+            <option value="crushed stone" selected="@(ViewData["material"]?.ToString() == "crushed stone")">Crushed Stone (~1.6 tons/yd³)</option>
+            <option value="gravel" selected="@(ViewData["material"]?.ToString() == "gravel")">Gravel (~1.4 tons/yd³)</option>
+            <option value="sand" selected="@(ViewData["material"]?.ToString() == "sand")">Sand (~1.2 tons/yd³)</option>
+        </select>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label>Extra volume (overage):</label><br />
+        <input type="number" name="extraVolume" step="0.01" min="0" value="@ViewData["extraVolume"]" placeholder="e.g. 0.5" />
+        <small>Leave blank for exact amount</small>
+    </div>
+
+    <button type="submit">Calculate</button>
+</form>
